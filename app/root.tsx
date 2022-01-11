@@ -23,10 +23,17 @@ export default function App() {
   useEffect(() => {
     let connection = connect();
     setSocket(connection);
-    connection.on("event", (data) => {
+    return () => {
+      connection.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("event", (data) => {
       console.log(data);
     });
-  }, []);
+  }, [socket]);
 
   return (
     <html lang="en">
